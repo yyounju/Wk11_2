@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동음이의어(Homonyms) 의미별 단계별 영작문 실습 - EFL 학습 앱</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #475569;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --accent-bg: #eff6ff;
+            --accent-border: #bfdbfe;
+            --task1-badge: #dcfce7;
+            --task1-text: #15803d;
+            --task2-badge: #fef3c7;
+            --task2-text: #b45309;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            background: var(--border);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-btn {
+            border: none;
+            background: transparent;
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .view-btn.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .lesson-header {
+            margin-bottom: 24px;
+        }
+
+        .word-badge-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .word-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 1.4rem;
+            padding: 4px 16px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+        }
+
+        .lesson-step-indicator {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .instruction-box {
+            background-color: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #1e3a8a;
+        }
+
+        .instruction-box ol {
+            margin-left: 20px;
+            margin-top: 6px;
+        }
+
+        .meaning-section {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 24px;
+            background: #ffffff;
+        }
+
+        .meaning-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--accent-border);
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+        }
+
+        .meaning-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .meaning-ko {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .task-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-complexity-badge {
+            display: inline-block;
+            align-self: flex-start;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-task1 {
+            background-color: var(--task1-badge);
+            color: var(--task1-text);
+        }
+
+        .badge-task2 {
+            background-color: var(--task2-badge);
+            color: var(--task2-text);
+        }
+
+        .prompt-image {
+            width: 100%;
+            height: 140px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .prompt-image svg {
+            width: 54px;
+            height: 54px;
+            fill: #64748b;
+        }
+
+        .task-desc-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-size: 0.875rem;
+        }
+
+        .task-desc-box strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .example-box {
+            background-color: #ffffff;
+            border-left: 3px solid var(--primary);
+            padding: 8px 12px;
+            margin-bottom: 14px;
+            font-size: 0.875rem;
+        }
+
+        .example-box strong {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.75rem;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Teacher Dashboard Styles */
+        .submission-item {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 20px;
+            background: #ffffff;
+        }
+
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+        }
+
+        .student-info {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .student-name {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 1.1rem;
+        }
+
+        .target-word-tag {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .submission-time {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .dashboard-meaning-block {
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 14px;
+            background: #fafafa;
+        }
+
+        .dashboard-meaning-block h3 {
+            font-size: 0.95rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 4px;
+        }
+
+        .submission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .submission-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submission-detail {
+            background: #ffffff;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .submission-detail h4 {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            margin-bottom: 4px;
+        }
+
+        .submitted-sentence {
+            font-size: 0.95rem;
+            color: #0f172a;
+            word-break: break-word;
+            white-space: pre-line;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>동음이의어(Homonyms) 의미별 단계별 영작문 실습</h1>
+        <div class="view-toggle">
+            <button class="view-btn active" id="student-tab-btn" onclick="switchView('student')">학생용 화면 (Student)</button>
+            <button class="view-btn" id="teacher-tab-btn" onclick="switchView('teacher')">교사용 대시보드 (Teacher)</button>
+        </div>
+    </header>
+
+    <!-- STUDENT VIEW -->
+    <main id="student-view">
+        <div class="card">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="student-name">학생 이름 또는 학번 (Student Name / ID)</label>
+                <input type="text" id="student-name" placeholder="예: 202412345 홍길동">
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="lesson-header">
+                <div class="word-badge-container">
+                    <span class="word-badge" id="target-word">Target Word: BANK</span>
+                    <span class="lesson-step-indicator" id="step-indicator">Lesson 1 / 3</span>
+                </div>
+            </div>
+
+            <div class="instruction-box">
+                <strong>📌 과제 난이도별 영작문 안내 (Task Complexity Guidelines)</strong>
+                <ol>
+                    <li>목표 단어의 <strong>각 의미(Meaning 1, Meaning 2)마다 Low-Complexity Task와 High-Complexity Task가 각각 제공</strong>됩니다.</li>
+                    <li><strong>Low-Complexity Task (기초):</strong> 주어진 이미지와 핵심 단어를 사용하여 간단한 묘사 문장(Simple Sentence) 1개를 작성하세요.</li>
+                    <li><strong>High-Complexity Task (심화):</strong> 제시된 딜레마, 이유, 조건 상황을 고려하여 복합 문장(Complex Sentence) 또는 2개 이상의 문장으로 구성된 글을 작성하세요.</li>
+                    <li>총 4개의 문항을 작성한 후 <strong>"현재 과제 제출하기"</strong> 버튼을 누르세요.</li>
+                </ol>
+            </div>
+
+            <!-- MEANING 1 SECTION -->
+            <div class="meaning-section">
+                <div class="meaning-section-header">
+                    <span class="meaning-title" id="meaning1-title">Meaning 1: Financial Institution</span>
+                    <span class="meaning-ko" id="meaning1-ko">(의미 1: 은행 - 금융 기관)</span>
+                </div>
+                <div class="tasks-grid">
+                    <!-- Meaning 1 - Low Complexity -->
+                    <div class="task-card">
+                        <span class="task-complexity-badge badge-task1">Task 1A: Low Complexity</span>
+                        <div class="prompt-image" id="img1a-container"></div>
+                        <div class="task-desc-box">
+                            <strong>과제 지시사항 (Task Instruction):</strong>
+                            <span id="m1-low-instruction">제시된 이미지 상황을 묘사하는 단순 영문장 1개를 작성하세요.</span>
+                        </div>
+                        <div class="example-box">
+                            <strong>예시 문장 (Example):</strong>
+                            <span id="m1-low-example">"I deposited money into my bank account."</span>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="text-1a">영문장 작성 (Write your sentence):</label>
+                            <textarea id="text-1a" rows="4" placeholder="Write a simple sentence for Meaning 1..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Meaning 1 - High Complexity -->
+                    <div class="task-card">
+                        <span class="task-complexity-badge badge-task2">Task 1B: High Complexity</span>
+                        <div class="prompt-image" id="img1b-container"></div>
+                        <div class="task-desc-box">
+                            <strong>과제 지시사항 (Task Instruction):</strong>
+                            <span id="m1-high-instruction">상황의 원인, 결과, 또는 목적을 포함하여 심화 영문장(복합문 또는 2문장 이상)을 작성하세요.</span>
+                        </div>
+                        <div class="example-box">
+                            <strong>예시 문장 (Example):</strong>
+                            <span id="m1-high-example">"Because the bank was closing in ten minutes, she quickly drove there to apply for a loan."</span>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="text-1b">영문장 작성 (Write your complex sentence/paragraph):</label>
+                            <textarea id="text-1b" rows="4" placeholder="Write a complex sentence for Meaning 1..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEANING 2 SECTION -->
+            <div class="meaning-section">
+                <div class="meaning-section-header">
+                    <span class="meaning-title" id="meaning2-title">Meaning 2: River Bank</span>
+                    <span class="meaning-ko" id="meaning2-ko">(의미 2: 강둑, 강가)</span>
+                </div>
+                <div class="tasks-grid">
+                    <!-- Meaning 2 - Low Complexity -->
+                    <div class="task-card">
+                        <span class="task-complexity-badge badge-task1">Task 2A: Low Complexity</span>
+                        <div class="prompt-image" id="img2a-container"></div>
+                        <div class="task-desc-box">
+                            <strong>과제 지시사항 (Task Instruction):</strong>
+                            <span id="m2-low-instruction">제시된 이미지 상황을 묘사하는 단순 영문장 1개를 작성하세요.</span>
+                        </div>
+                        <div class="example-box">
+                            <strong>예시 문장 (Example):</strong>
+                            <span id="m2-low-example">"We sat on the grassy bank of the river."</span>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="text-2a">영문장 작성 (Write your sentence):</label>
+                            <textarea id="text-2a" rows="4" placeholder="Write a simple sentence for Meaning 2..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Meaning 2 - High Complexity -->
+                    <div class="task-card">
+                        <span class="task-complexity-badge badge-task2">Task 2B: High Complexity</span>
+                        <div class="prompt-image" id="img2b-container"></div>
+                        <div class="task-desc-box">
+                            <strong>과제 지시사항 (Task Instruction):</strong>
+                            <span id="m2-high-instruction">상황의 원인, 결과, 또는 목적을 포함하여 심화 영문장(복합문 또는 2문장 이상)을 작성하세요.</span>
+                        </div>
+                        <div class="example-box">
+                            <strong>예시 문장 (Example):</strong>
+                            <span id="m2-high-example">"Although the river bank was muddy after the heavy rain, the fishermen decided to stay because the fish were biting."</span>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="text-2b">영문장 작성 (Write your complex sentence/paragraph):</label>
+                            <textarea id="text-2b" rows="4" placeholder="Write a complex sentence for Meaning 2..."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="changeLesson(-1)" id="prev-btn" disabled>이전 단어</button>
+                <button class="btn" onclick="submitCurrentLesson()" style="background-color: var(--success);">현재 과제 제출하기</button>
+                <button class="btn btn-secondary" onclick="changeLesson(1)" id="next-btn">다음 단어</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- TEACHER DASHBOARD VIEW -->
+    <main id="teacher-view" class="hidden">
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div>
+                    <h2 style="font-size: 1.25rem;">제출된 학생 과제 목록</h2>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">학생별 의미당 기초(Low) 및 심화(High) 영작문 4문항 데이터를 검토합니다.</p>
+                </div>
+                <button class="btn btn-danger" onclick="clearAllData()">전체 제출 데이터 삭제</button>
+            </div>
+            <div id="submissions-list">
+                <!-- Submissions populated dynamically -->
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Lesson Data Definitions with Both Low & High Complexity Tasks per Meaning
+    const lessons = [
+        {
+            word: "BANK",
+            // Meaning 1: Financial Institution
+            meaning1Title: "Meaning 1: Financial Institution",
+            meaning1Ko: "의미 1: 은행 (금융 기관)",
+            svg1a: '<svg viewBox="0 0 24 24"><path d="M11.5 1L2 6v2h19V6l-9.5-5zm-5 7v9h3V8h-3zm5 0v9h3V8h-3zm5 0v9h3V8h-3zM2 19v2h19v-2H2z"/></svg>',
+            m1LowInstruction: "[기초] 이미지를 보고 인물이 은행에서 수행하는 단순 동작(돈 예금/출금 등)을 묘사하는 단순 문장 1개를 작성하세요.",
+            m1LowExample: "I deposited money into my bank account yesterday.",
+            svg1b: '<svg viewBox="0 0 24 24"><path d="M4 10h16v11H4zm3-7h10v4H7z"/></svg>',
+            m1HighInstruction: "[심화] 은행 방문의 목적이나 급박한 상황(예: 마감 시간, 대출 상담 등)을 원인/결과 접속사(because, so, in order to 등)를 포함해 작성하세요.",
+            m1HighExample: "Because the bank was closing in ten minutes, she quickly drove there to apply for a business loan.",
+
+            // Meaning 2: River Bank
+            meaning2Title: "Meaning 2: River Bank",
+            meaning2Ko: "의미 2: 강둑, 강가",
+            svg2a: '<svg viewBox="0 0 24 24"><path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/></svg>',
+            m2LowInstruction: "[기초] 이미지를 보고 강가(river bank) 주변의 사물이나 인물의 위치를 설명하는 단순 문장 1개를 작성하세요.",
+            m2LowExample: "We sat on the grassy bank of the river to eat lunch.",
+            svg2b: '<svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>',
+            m2HighInstruction: "[심화] 날씨 변화나 자연 환경 요소가 강가 활동에 미친 영향을 양보/조건 접속사(although, if, while 등)를 활용해 복합 문장으로 작성하세요.",
+            m2HighExample: "Although the river bank was muddy after the heavy rain, the fishermen decided to stay because the fish were biting."
+        },
+        {
+            word: "CAN",
+            // Meaning 1: Metal Container
+            meaning1Title: "Meaning 1: Metal Container",
+            meaning1Ko: "의미 1: 금속 캔, 통 (명사)",
+            svg1a: '<svg viewBox="0 0 24 24"><path d="M12 2c-4.42 0-8 1.79-8 4v12c0 2.21 3.58 4 8 4s8-1.79 8-4V6c0-2.21-3.58-4-8-4zm0 2c3.86 0 6 1.34 6 2s-2.14 2-6 2-6-1.34-6-2 2.14-2 6-2z"/></svg>',
+            m1LowInstruction: "[기초] 음료수 캔이나 통조림 캔의 상태 및 개봉 행동을 설명하는 단순 문장 1개를 작성하세요.",
+            m1LowExample: "He opened a cold can of soda after running.",
+            svg1b: '<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>',
+            m1HighInstruction: "[심화] 캔 제품을 이용해 요리를 하거나 재활용(recycle) 환경 문제를 해결하는 과정을 접속사나 연결어를 사용해 상세히 기술하세요.",
+            m1HighExample: "After opening a can of tuna to make sandwiches, she thoroughly washed it so it could be recycled properly.",
+
+            // Meaning 2: Ability / Possibility
+            meaning2Title: "Meaning 2: Ability / Possibility",
+            meaning2Ko: "의미 2: ~할 수 있다 (조동사)",
+            svg2a: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>',
+            m2LowInstruction: "[기초] 본인이나 특정 인물이 잘할 수 있는 기술이나 능력을 언급하는 단순 문장 1개를 작성하세요.",
+            m2LowExample: "She can speak three foreign languages fluently.",
+            svg2b: '<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
+            m2HighInstruction: "[심화] 팀원들과 협력하여 어려운 문제나 과제를 해결할 수 있는 조건(if절 활용)과 극복 과정을 복합 문장으로 작성하세요.",
+            m2HighExample: "If all team members share their ideas openly, we can overcome this unexpected challenge and finish the project on time."
+        },
+        {
+            word: "BAND",
+            // Meaning 1: Elastic Ring / Strip
+            meaning1Title: "Meaning 1: Elastic Ring / Strip",
+            meaning1Ko: "의미 1: 끈, 띠, 고무줄 (명사)",
+            svg1a: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 16c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>',
+            m1LowInstruction: "[기초] 고무줄(rubber band)이나 띠로 물건을 묶는 간단한 동작을 설명하는 단순 문장 1개를 작성하세요.",
+            m1LowExample: "She wrapped a rubber band around the bundle of pencils.",
+            svg1b: '<svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 6.29 3.43 4.86 2 3.43 3.43 2 4.86 3.43 6.29 2 7.71 3.43 9.14 2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22 14.86 20.57 16.29 22 17.71 20.57 19.14 22 20.57 20.57 22 19.14 20.57 17.71 22 16.29 20.57 14.86z"/></svg>',
+            m1HighInstruction: "[심화] 운동용 저항 밴드(resistance band)를 활용해 체력을 증진하거나 부상을 방지하는 목적과 효과를 포함하여 심화 문장으로 작성하세요.",
+            m1HighExample: "In order to prevent knee injuries before running, he uses an elastic resistance band to warm up his leg muscles."
+
+            // Meaning 2: Musical Group
+            meaning2Title: "Meaning 2: Musical Group",
+            meaning2Ko: "의미 2: 음악 밴드, 악단 (명사)",
+            svg2a: '<svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>',
+            m2LowInstruction: "[기초] 음악 밴드의 라이브 공연을 관람하는 단순한 상황을 묘사하는 단순 문장 1개를 작성하세요.",
+            m2LowExample: "The rock band played energetic music on the stage.",
+            svg2b: '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>',
+            m2HighInstruction: "[심화] 좋아하는 밴드의 콘서트 현장의 열기, 감동, 그리고 청중의 반응을 관성/상황 설명 접속사를 사용하여 2개 이상의 문장이나 복합문으로 작성하세요.",
+            m2HighExample: "When the lead singer started playing the final song, the entire audience stood up and sang along together with passion."
+        }
+    ];
+
+    let currentLessonIdx = 0;
+
+    // Initialize UI
+    loadLesson(currentLessonIdx);
+
+    function switchView(view) {
+        const studentView = document.getElementById('student-view');
+        const teacherView = document.getElementById('teacher-view');
+        const studentTab = document.getElementById('student-tab-btn');
+        const teacherTab = document.getElementById('teacher-tab-btn');
+
+        if (view === 'student') {
+            studentView.classList.remove('hidden');
+            teacherView.classList.add('hidden');
+            studentTab.classList.add('active');
+            teacherTab.classList.remove('active');
+        } else {
+            studentView.classList.add('hidden');
+            teacherView.classList.remove('hidden');
+            studentTab.classList.remove('active');
+            teacherTab.classList.active;
+            teacherTab.classList.add('active');
+            loadTeacherDashboard();
+        }
+    }
+
+    function loadLesson(index) {
+        const lesson = lessons[index];
+        document.getElementById('target-word').innerText = `Target Word: ${lesson.word}`;
+        document.getElementById('step-indicator').innerText = `Lesson ${index + 1} / ${lessons.length}`;
+
+        // Meaning 1 Setup
+        document.getElementById('meaning1-title').innerText = lesson.meaning1Title;
+        document.getElementById('meaning1-ko').innerText = `(${lesson.meaning1Ko})`;
+        document.getElementById('img1a-container').innerHTML = lesson.svg1a;
+        document.getElementById('m1-low-instruction').innerText = lesson.m1LowInstruction;
+        document.getElementById('m1-low-example').innerText = lesson.m1LowExample;
+
+        document.getElementById('img1b-container').innerHTML = lesson.svg1b;
+        document.getElementById('m1-high-instruction').innerText = lesson.m1HighInstruction;
+        document.getElementById('m1-high-example').innerText = lesson.m1HighExample;
+
+        // Meaning 2 Setup
+        document.getElementById('meaning2-title').innerText = lesson.meaning2Title;
+        document.getElementById('meaning2-ko').innerText = `(${lesson.meaning2Ko})`;
+        document.getElementById('img2a-container').innerHTML = lesson.svg2a;
+        document.getElementById('m2-low-instruction').innerText = lesson.m2LowInstruction;
+        document.getElementById('m2-low-example').innerText = lesson.m2LowExample;
+
+        document.getElementById('img2b-container').innerHTML = lesson.svg2b;
+        document.getElementById('m2-high-instruction').innerText = lesson.m2HighInstruction;
+        document.getElementById('m2-high-example').innerText = lesson.m2HighExample;
+
+        document.getElementById('prev-btn').disabled = index === 0;
+        document.getElementById('next-btn').disabled = index === lessons.length - 1;
+
+        // Clear input fields
+        document.getElementById('text-1a').value = '';
+        document.getElementById('text-1b').value = '';
+        document.getElementById('text-2a').value = '';
+        document.getElementById('text-2b').value = '';
+    }
+
+    function changeLesson(direction) {
+        currentLessonIdx += direction;
+        loadLesson(currentLessonIdx);
+    }
+
+    function submitCurrentLesson() {
+        const studentName = document.getElementById('student-name').value.trim();
+        if (!studentName) {
+            alert('과제를 제출하기 전에 학생 이름 또는 학번을 입력해 주세요.');
+            return;
+        }
+
+        const text1a = document.getElementById('text-1a').value.trim();
+        const text1b = document.getElementById('text-1b').value.trim();
+        const text2a = document.getElementById('text-2a').value.trim();
+        const text2b = document.getElementById('text-2b').value.trim();
+
+        if (!text1a && !text1b && !text2a && !text2b) {
+            alert('최소 하나 이상의 영문항을 작성한 후 제출해 주세요.');
+            return;
+        }
+
+        const submission = {
+            id: Date.now(),
+            studentName: studentName,
+            word: lessons[currentLessonIdx].word,
+            
+            meaning1Title: lessons[currentLessonIdx].meaning1Title,
+            meaning1Ko: lessons[currentLessonIdx].meaning1Ko,
+            text1a: text1a,
+            text1b: text1b,
+
+            meaning2Title: lessons[currentLessonIdx].meaning2Title,
+            meaning2Ko: lessons[currentLessonIdx].meaning2Ko,
+            text2a: text2a,
+            text2b: text2b,
+
+            timestamp: new Date().toLocaleString('ko-KR')
+        };
+
+        let submissions = JSON.parse(localStorage.getItem('homonym_dual_complexity_submissions') || '[]');
+        submissions.push(submission);
+        localStorage.setItem('homonym_dual_complexity_submissions', JSON.stringify(submissions));
+
+        alert('과제가 성공적으로 제출되었습니다!');
+
+        // Reset inputs for next response
+        document.getElementById('text-1a').value = '';
+        document.getElementById('text-1b').value = '';
+        document.getElementById('text-2a').value = '';
+        document.getElementById('text-2b').value = '';
+    }
+
+    function loadTeacherDashboard() {
+        const container = document.getElementById('submissions-list');
+        const submissions = JSON.parse(localStorage.getItem('homonym_dual_complexity_submissions') || '[]');
+
+        if (submissions.length === 0) {
+            container.innerHTML = '<div class="empty-state">아직 제출된 학생 과제가 없습니다.</div>';
+            return;
+        }
+
+        container.innerHTML = submissions.map(sub => `
+            <div class="submission-item">
+                <div class="submission-header">
+                    <div class="student-info">
+                        <span class="student-name">${sub.studentName}</span>
+                        <span class="target-word-tag">Target Word: ${sub.word}</span>
+                    </div>
+                    <span class="submission-time">${sub.timestamp}</span>
+                </div>
+
+                <!-- Meaning 1 Block -->
+                <div class="dashboard-meaning-block">
+                    <h3>${sub.meaning1Title} (${sub.meaning1Ko})</h3>
+                    <div class="submission-grid">
+                        <div class="submission-detail">
+                            <span class="task-complexity-badge badge-task1">Task 1A: Low Complexity</span>
+                            <div class="submitted-sentence">${sub.text1a ? sub.text1a : '<em>작성된 문장 없음</em>'}</div>
+                        </div>
+                        <div class="submission-detail">
+                            <span class="task-complexity-badge badge-task2">Task 1B: High Complexity</span>
+                            <div class="submitted-sentence">${sub.text1b ? sub.text1b : '<em>작성된 문장 없음</em>'}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meaning 2 Block -->
+                <div class="dashboard-meaning-block" style="margin-bottom: 0;">
+                    <h3>${sub.meaning2Title} (${sub.meaning2Ko})</h3>
+                    <div class="submission-grid">
+                        <div class="submission-detail">
+                            <span class="task-complexity-badge badge-task1">Task 2A: Low Complexity</span>
+                            <div class="submitted-sentence">${sub.text2a ? sub.text2a : '<em>작성된 문장 없음</em>'}</div>
+                        </div>
+                        <div class="submission-detail">
+                            <span class="task-complexity-badge badge-task2">Task 2B: High Complexity</span>
+                            <div class="submitted-sentence">${sub.text2b ? sub.text2b : '<em>작성된 문장 없음</em>'}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).reverse().join('');
+    }
+
+    function clearAllData() {
+        if (confirm("정말로 모든 학생 제출 데이터를 삭제하시겠습니까? 이 작업은 복구할 수 없습니다.")) {
+            localStorage.removeItem('homonym_dual_complexity_submissions');
+            loadTeacherDashboard();
+        }
+    }
+</script>
+</body>
+</html>
